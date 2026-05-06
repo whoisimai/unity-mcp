@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+const fetch = (globalThis as any).fetch;
 import { tools } from "./tools/registry";
 
 export async function queryLLM(prompt: string) {
