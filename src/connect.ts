@@ -24,3 +24,18 @@ wss.on("connection", (ws) => {
     if (ws === unityClient) unityClient = null;
   });
 });
+
+export function sendToUnity(action: string, payload: any) {
+  if (!unityClient) {
+    console.log("Unity not connected");
+    return;
+  }
+
+  unityClient.send(
+    JSON.stringify({
+      type: "action",
+      action,
+      payload,
+    })
+  );
+}
