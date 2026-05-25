@@ -1,0 +1,9 @@
+### POST 
+POST http://localhost:11434/api/chat
+Content-Type: application/json
+
+{
+	"model": "qwen3:4b",
+  "stream": false,
+  "messages": [{"role": "user", "content": "Its very cold today"}]
+}
