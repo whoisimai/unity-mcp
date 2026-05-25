@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "server.js",
+    "dev": "node server.js",
     "build": "tsc",
-    "start": "server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
