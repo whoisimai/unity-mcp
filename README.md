@@ -75,10 +75,10 @@ If you want to use AI *inside* the Unity Editor without going through Claude Des
 
 | Tab | What it does |
 |-----|-------------|
-| 💬 Ask AI | Free-form prompt to qwen3:8b. Can save response as `.cs` file |
-| 🏗️ Build Scene | Describe a scene → get JSON → click to build it in the editor |
-| 🥽 VR Design | Design complete VR environments with XR Toolkit setup |
-| 🔧 Refactor | Paste code → get review + refactored version |
+| Ask AI | Free-form prompt to qwen3:8b. Can save response as `.cs` file |
+| Build Scene | Describe a scene → get JSON → click to build it in the editor |
+| VR Design | Design complete VR environments with XR Toolkit setup |
+| Refactor | Paste code → get review + refactored version |
 
 ---
 
