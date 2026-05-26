@@ -1,9 +1,3 @@
-#!/usr/bin/env node
-/**
- * Unity Ollama MCP Server
- * Connects qwen3:8b (via Ollama) to Unity Editor for AI-assisted development
- */
-
 import { Server } from "@modelcontextprotocol/sdk/server/index.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import {
@@ -14,7 +8,7 @@ import {
 const OLLAMA_BASE_URL = process.env.OLLAMA_URL || "http://localhost:11434";
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "qwen3:4b";
 
-// ── Ollama helper ──────────────────────────────────────────────────────────────
+// Ollama helper
 async function ollamaChat(systemPrompt, userMessage, temperature = 0.4) {
   const response = await fetch(`${OLLAMA_BASE_URL}/api/chat`, {
     method: "POST",
@@ -39,7 +33,7 @@ async function ollamaChat(systemPrompt, userMessage, temperature = 0.4) {
   return data.message?.content ?? "";
 }
 
-// ── System prompts ─────────────────────────────────────────────────────────────
+// System prompts
 const UNITY_DEV_SYSTEM = `You are an expert Unity developer specialising in C#, Unity Engine APIs, 
 XR/VR development (Unity XR Toolkit, OpenXR), and real-time 3D. 
 Produce clean, well-commented, production-ready Unity C# code.
@@ -88,7 +82,7 @@ Analyse code for: performance (GC allocations, Update() overhead, draw calls),
 Unity best practices, XR-specific issues, and architecture.
 Provide specific, actionable improvements with corrected code snippets.`;
 
-// ── Tool definitions ───────────────────────────────────────────────────────────
+// Tool definitions
 const TOOLS = [
   {
     name: "generate_unity_script",
@@ -268,10 +262,10 @@ const TOOLS = [
   },
 ];
 
-// ── Tool handlers ──────────────────────────────────────────────────────────────
+// Tool handlers
 async function handleTool(name, args) {
   switch (name) {
-    // ── Generate Unity Script ──────────────────────────────────────────────
+    // Generate Unity Script
     case "generate_unity_script": {
       const { description, class_name, script_type = "MonoBehaviour", xr_enabled = false } = args;
       const xrNote = xr_enabled
@@ -286,7 +280,7 @@ Return ONLY the complete .cs file content, starting with the using directives.`;
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Build Scene JSON ───────────────────────────────────────────────────
+    // Build Scene JSON
     case "build_scene_json": {
       const { description, scene_name, is_vr = false } = args;
       const vrNote = is_vr
@@ -309,7 +303,7 @@ Return ONLY valid JSON following the exact schema specified. No markdown.`;
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Design VR Environment ──────────────────────────────────────────────
+    // Design VR Environment
     case "design_vr_environment": {
       const {
         environment_type,
@@ -334,7 +328,7 @@ Provide:
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Explain Unity Concept ──────────────────────────────────────────────
+    // Explain Unity Concept
     case "explain_unity_concept": {
       const { concept, context = "", include_example = true } = args;
       const prompt = `Explain: ${concept}
@@ -345,7 +339,7 @@ Be concise but complete. Focus on practical usage over theory.`;
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Refactor Unity Code ────────────────────────────────────────────────
+    // Refactor Unity Code
     case "refactor_unity_code": {
       const { code, focus = "all" } = args;
       const prompt = `Review this Unity C# code with focus on: ${focus}.
@@ -357,7 +351,7 @@ Provide: issues found, refactored code, explanation of changes.`;
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Generate Prefab Layout ─────────────────────────────────────────────
+    // Generate Prefab Layout
     case "generate_prefab_layout": {
       const { prefabs, space_description, is_vr = false } = args;
       const prompt = `Generate Unity scene JSON layout for these prefabs: ${prefabs.join(", ")}.
@@ -368,7 +362,7 @@ Use the standard scene JSON schema. Return ONLY valid JSON.`;
       return { content: [{ type: "text", text: result }] };
     }
 
-    // ── Write XR Interaction ───────────────────────────────────────────────
+    // Write XR Interaction
     case "write_xr_interaction": {
       const { interaction_type, object_description = "generic interactable object", haptics = false } = args;
       const prompt = `Write a complete Unity XR Toolkit C# script for: ${interaction_type}
@@ -385,7 +379,7 @@ Return only the complete .cs file.`;
   }
 }
 
-// ── MCP Server setup ───────────────────────────────────────────────────────────
+// MCP Server setup 
 const server = new Server(
   { name: "unity-ollama-mcp", version: "1.0.0" },
   { capabilities: { tools: {} } }
